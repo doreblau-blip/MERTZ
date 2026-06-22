@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initStickyHeader();
   initVideoAudio();
   initHeroVideoControl();
+  initScrollResponsiveMarquee();
+  initNavbarHUD();
+  scrambleLogo();
 });
 
 /* -------------------------------------------------------------
@@ -398,5 +401,124 @@ function initHeroVideoControl() {
       video.pause();
       controlBtn.classList.add('paused');
     }
+  });
+}
+
+/* -------------------------------------------------------------
+ * 8. Scroll-Velocity-Responsive Marquee Ticker Speed
+ * ------------------------------------------------------------- */
+function initScrollResponsiveMarquee() {
+  const track = document.querySelector('.marquee-track');
+  if (!track) return;
+
+  // Disable default CSS animation to drive it via JS requestAnimationFrame
+  track.style.animation = 'none';
+
+  let offset = 0;
+  const baseSpeed = 0.8; // default smooth scrolling speed
+  let speed = baseSpeed;
+  let lastScrollY = window.scrollY;
+  let scrollVelocity = 0;
+
+  function tick() {
+    const currentScrollY = window.scrollY;
+    scrollVelocity = Math.abs(currentScrollY - lastScrollY);
+    lastScrollY = currentScrollY;
+
+    // The faster the scroll, the faster the marquee translates
+    const targetSpeed = baseSpeed + scrollVelocity * 0.18;
+    
+    // Smoothly decay back to base speed
+    speed += (targetSpeed - speed) * 0.08;
+
+    offset += speed;
+
+    const halfWidth = track.offsetWidth / 2;
+    if (halfWidth > 0 && offset >= halfWidth) {
+      offset = offset % halfWidth;
+    }
+
+    track.style.transform = `translate3d(${-offset}px, 0, 0)`;
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+}
+
+/* -------------------------------------------------------------
+ * 9. Live System HUD Overlay inside the Navbar
+ * ------------------------------------------------------------- */
+function initNavbarHUD() {
+  const scrollVal = document.getElementById('hud-scroll-val');
+  const seedVal = document.getElementById('hud-seed-val');
+  if (!scrollVal && !seedVal) return;
+
+  // Update scroll percentage readout
+  window.addEventListener('scroll', () => {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight <= 0) return;
+    const pct = Math.min(Math.max(Math.round((window.scrollY / docHeight) * 100), 0), 100);
+    if (scrollVal) {
+      scrollVal.textContent = String(pct).padStart(2, '0');
+    }
+  }, { passive: true });
+
+  // Update seed calculations based on mouse coordinates
+  let currentSeed = 0.5173;
+  let targetSeed = 0.5173;
+
+  document.addEventListener('mousemove', (e) => {
+    const normX = e.clientX / window.innerWidth;
+    const normY = e.clientY / window.innerHeight;
+    targetSeed = (normX * 829.17 + normY * 114.65) % 1000;
+  });
+
+  function updateSeed() {
+    currentSeed += (targetSeed - currentSeed) * 0.04;
+    if (seedVal) {
+      seedVal.textContent = currentSeed.toFixed(4);
+    }
+    requestAnimationFrame(updateSeed);
+  }
+  updateSeed();
+}
+
+/* -------------------------------------------------------------
+ * 10. Logo Text Scrambler Animation
+ * ------------------------------------------------------------- */
+function scrambleLogo() {
+  const brandLogo = document.querySelector('.brand-logo');
+  if (!brandLogo || !brandLogo.childNodes[0]) return;
+
+  const originalText = "MERTZ";
+  const glyphs = "01XY$&#%*?[]^-_+={}/\\";
+  let isScrambling = false;
+
+  brandLogo.addEventListener('mouseenter', () => {
+    if (isScrambling) return;
+    isScrambling = true;
+
+    let iterations = 0;
+    const interval = setInterval(() => {
+      const scrambled = originalText
+        .split("")
+        .map((char, index) => {
+          if (index < iterations) {
+            return originalText[index];
+          }
+          return glyphs[Math.floor(Math.random() * glyphs.length)];
+        })
+        .join("");
+
+      // Update the first text node, preserving the reg-symbol span child
+      brandLogo.childNodes[0].textContent = scrambled;
+
+      if (iterations >= originalText.length) {
+        clearInterval(interval);
+        isScrambling = false;
+      }
+
+      iterations += 1/3;
+    }, 30);
   });
 }

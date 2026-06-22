@@ -257,13 +257,62 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
 /* Endless Scrolling Marquee Track styles */
 .marquee-ticker {
   overflow: hidden;
-  width: 100%;
+  flex-grow: 1;
   height: 100%;
   position: relative;
   display: flex;
   align-items: center;
   pointer-events: none;
   user-select: none;
+}
+
+/* Awwwards-style navbar HUD styling */
+.navbar-hud {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.5px;
+  color: #ffffff; /* difference blend handles this */
+  z-index: 5;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: 20px;
+}
+
+.hud-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+.hud-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: currentColor;
+  animation: hud-pulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes hud-pulse {
+  0% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Hide HUD on mobile to avoid overcrowding */
+@media (max-width: 767px) {
+  .navbar-hud {
+    display: none;
+  }
 }
 
 .marquee-track {
