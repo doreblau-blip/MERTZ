@@ -475,8 +475,12 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
 .header-right {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 50%;
+  justify-content: flex-end;
+  align-items: flex-end;
+  text-align: right;
+  height: auto;
+  align-self: flex-end;
+  margin-bottom: -15px; /* sit close to the footer line */
   width: calc(50% - 50px);
   gap: 50px;
   position: relative;
@@ -511,6 +515,7 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  align-items: flex-end;
 }
 
 .clients-list {
@@ -518,6 +523,7 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  align-items: flex-end;
 }
 
 .clients-list li {
@@ -1091,6 +1097,10 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
     width: 100%;
     height: auto;
     gap: 20px;
+    align-self: auto;
+    align-items: flex-start;
+    text-align: left;
+    margin-bottom: 0;
   }
 
   .brand-logo {
@@ -1115,6 +1125,11 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
 
   .selected-clients-box {
     gap: 8px;
+    align-items: flex-start;
+  }
+  
+  .clients-list {
+    align-items: flex-start;
   }
 
   .clients-list li {
