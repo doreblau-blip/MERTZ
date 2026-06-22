@@ -379,25 +379,29 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
 }
 
 /* Scrolled State Styles (when moving over project sections) */
+.site-header-fixed.scrolled {
+  mix-blend-mode: difference;
+}
+
 .site-header-fixed.scrolled .brand-logo {
   color: #ffffff; /* Becomes white to enable difference blend calculation */
-  mix-blend-mode: difference; /* Enables negative inversion over project blocks */
+  mix-blend-mode: normal;
 }
 
 .site-header-fixed.scrolled .action-bar {
-  mix-blend-mode: difference; /* Enables negation for ticker text on scroll */
+  mix-blend-mode: normal;
 }
 
 .site-header-fixed.scrolled .ticker-mertz {
-  color: #e3e3e1; /* Inverted: renders as #1c1c1e (dark gray) over white, white over black */
+  color: #ffffff;
 }
 
 .site-header-fixed.scrolled .ticker-star {
-  color: #71716c; /* Inverted: renders as #8e8e93 (muted gray) over white, light gray over black */
+  color: #888888;
 }
 
 .site-header-fixed.scrolled .ticker-studios {
-  color: #2e2e29; /* Inverted: renders as #d1d1d6 (light gray) over white, slate gray over black */
+  color: #bbbbbb;
 }
 
 .reg-symbol {
