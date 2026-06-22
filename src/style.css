@@ -249,7 +249,6 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
   align-items: center;
   width: 100%;
   min-height: 2.8rem;
-  overflow: hidden;
   flex-shrink: 0;
   color: #ffffff;
 }
@@ -270,23 +269,40 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
 .navbar-hud {
   display: inline-flex;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
   font-family: var(--font-body);
   font-size: 0.72rem;
   letter-spacing: 0.5px;
-  color: #ffffff; /* difference blend handles this */
+  color: #ffffff;
   z-index: 5;
   white-space: nowrap;
   flex-shrink: 0;
-  margin-left: 20px;
+  margin-left: 15px;
+  /* Typewriter reveal animation */
+  opacity: 0;
+  clip-path: inset(0 100% 0 0);
+  transition: none; /* JS will control the reveal */
+}
+
+.navbar-hud.hud-revealed {
+  opacity: 1;
+  clip-path: inset(0 0% 0 0);
+  transition: clip-path 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
 }
 
 .hud-item {
   display: flex;
   align-items: center;
   gap: 6px;
-  opacity: 0.8;
+  opacity: 0;
   font-weight: 400;
+  transform: translateY(3px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hud-item.hud-item-visible {
+  opacity: 0.8;
+  transform: translateY(0);
 }
 
 .hud-dot {
@@ -312,6 +328,14 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
 @media (max-width: 767px) {
   .navbar-hud {
     display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .navbar-hud {
+    gap: 12px;
+    margin-left: 10px;
+    font-size: 0.65rem;
   }
 }
 
@@ -1346,178 +1370,4 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
   display: none;
 }
 
-/* -------------------------------------------------------------
- * Constellation Engine Styling
- * ------------------------------------------------------------- */
-.constellation-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2; /* Sits above video but below layout content overlays */
-  pointer-events: none;
-  mix-blend-mode: difference;
-}
 
-.constellation-svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-/* Subtle vector line styling for connection threads */
-.constellation-line {
-  stroke: rgba(255, 255, 255, 0.2);
-  stroke-width: 0.95px;
-  transition: stroke 0.35s ease, stroke-width 0.35s ease;
-}
-
-.constellation-line.active-path {
-  stroke: rgba(255, 255, 255, 0.7);
-  stroke-width: 1.1px;
-}
-
-/* Animated glowing data packet pulses */
-.pulse-dot {
-  fill: #ffffff;
-  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.pulse-dot.active-pulse {
-  opacity: 1;
-}
-
-.constellation-nodes {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-/* Center Interactive Orb */
-.center-orb {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: transparent;
-  border: 1px solid currentColor;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  pointer-events: auto;
-  z-index: 10;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
-  padding: 0;
-}
-
-.center-orb:hover {
-  transform: translate(-50%, -50%) scale(1.08);
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
-}
-
-.orb-scanner {
-  position: absolute;
-  inset: 5px;
-  border-radius: 50%;
-  border: 1px dashed rgba(255, 255, 255, 0.25);
-  animation: orb-spin 15s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes orb-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.orb-letter {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 2.4rem;
-  font-weight: 800;
-  line-height: 1;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* Interactive constellation node buttons */
-.constellation-node-btn {
-  position: absolute;
-  background: transparent;
-  border: none;
-  color: #ffffff;
-  cursor: pointer;
-  pointer-events: auto;
-  padding: 8px 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  z-index: 8;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0);
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-              color 0.3s ease;
-  white-space: nowrap;
-}
-
-.constellation-node-btn.visible {
-  opacity: 0.7;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.constellation-node-btn.visible:hover {
-  opacity: 1;
-}
-
-.constellation-node-btn.active-focus {
-  opacity: 1;
-  color: #ffffff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-  transform: translate(-50%, -50%) scale(1.08);
-}
-
-.constellation-node-btn.dimmed {
-  opacity: 0.22;
-}
-
-.node-label {
-  pointer-events: none;
-  user-select: none;
-}
-
-.node-coords {
-  display: block;
-  font-family: var(--font-body);
-  font-size: 0.55rem;
-  opacity: 0.45;
-  margin-top: 2px;
-  letter-spacing: 0.2px;
-  pointer-events: none;
-  user-select: none;
-  transition: opacity 0.3s ease;
-}
-
-.constellation-node-btn.active-focus .node-coords {
-  opacity: 0.8;
-}

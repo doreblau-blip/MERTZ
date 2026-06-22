@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollResponsiveMarquee();
   initNavbarHUD();
   scrambleLogo();
-  initConstellationEngine();
 });
 
 /* -------------------------------------------------------------
@@ -450,9 +449,22 @@ function initScrollResponsiveMarquee() {
  * 9. Live System HUD Overlay inside the Navbar
  * ------------------------------------------------------------- */
 function initNavbarHUD() {
+  const hudPanel = document.querySelector('.navbar-hud');
   const scrollVal = document.getElementById('hud-scroll-val');
   const seedVal = document.getElementById('hud-seed-val');
-  if (!scrollVal && !seedVal) return;
+  const hudItems = document.querySelectorAll('.hud-item');
+  if (!hudPanel) return;
+
+  // Typewriter reveal: panel slides in, then items appear one by one
+  setTimeout(() => {
+    hudPanel.classList.add('hud-revealed');
+    
+    hudItems.forEach((item, i) => {
+      setTimeout(() => {
+        item.classList.add('hud-item-visible');
+      }, 400 + i * 250); // stagger each item by 250ms
+    });
+  }, 800); // initial delay before HUD starts appearing
 
   // Update scroll percentage readout
   window.addEventListener('scroll', () => {
@@ -524,286 +536,4 @@ function scrambleLogo() {
   });
 }
 
-/* -------------------------------------------------------------
- * 11. Constellation Engine (Interactive Mind Map / Constellation)
- * ------------------------------------------------------------- */
-function initConstellationEngine() {
-  const container = document.getElementById('constellation-container');
-  const svg = document.getElementById('constellation-svg');
-  const nodesContainer = document.getElementById('constellation-nodes');
-  const orb = document.getElementById('center-orb');
-  if (!container || !svg || !nodesContainer || !orb) return;
 
-  const nodeData = [
-    { id: 'direction', label: 'CREATIVE DIRECTION', dx: -240, dy: -140, phase: 0 },
-    { id: 'ai', label: 'GENERATIVE SYSTEMS', dx: -280, dy: 80, phase: 1.2 },
-    { id: 'artistry', label: 'AI ARTISTRY', dx: -100, dy: -240, phase: 2.5 },
-    { id: 'design', label: '3D DESIGN', dx: 140, dy: -240, phase: 3.8 },
-    { id: 'landscapes', label: 'DIGITAL LANDSCAPES', dx: 260, dy: -100, phase: 4.7 },
-    { id: 'storytelling', label: 'STORYTELLING', dx: -180, dy: -30, phase: 5.9 }
-  ];
-
-  let isExpanded = false;
-  let activeNodeId = null;
-  let animationFrameId = null;
-
-  // Create SVG lines and circles
-  const lines = [];
-  const dots = [];
-  
-  // Track dynamic properties of nodes (positions and pulse speeds)
-  const nodeState = nodeData.map(node => ({
-    ...node,
-    x: 0,
-    y: 0,
-    currentScale: 0,
-    targetScale: 0,
-    currentOpacity: 0,
-    targetOpacity: 0,
-    pulseProgress: Math.random(),
-    pulseSpeed: 0.003 + Math.random() * 0.002
-  }));
-
-  // Initialize SVG elements
-  nodeState.forEach((node, i) => {
-    // Connection line
-    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.setAttribute('class', 'constellation-line');
-    svg.appendChild(line);
-    lines.push(line);
-
-    // Pulse dot
-    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    dot.setAttribute('class', 'pulse-dot');
-    dot.setAttribute('r', '2');
-    svg.appendChild(dot);
-    dots.push(dot);
-
-    // DOM button
-    const btn = document.createElement('button');
-    btn.setAttribute('class', 'constellation-node-btn');
-    btn.setAttribute('id', `node-${node.id}`);
-    btn.innerHTML = `
-      <span class="node-label">${node.label}</span>
-      <span class="node-coords">[x:${node.dx.toFixed(1)}, y:${node.dy.toFixed(1)}]</span>
-    `;
-    nodesContainer.appendChild(btn);
-
-    // Node click handler
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (activeNodeId === node.id) {
-        // De-select
-        activeNodeId = null;
-      } else {
-        // Select and trigger scramble
-        activeNodeId = node.id;
-        scrambleNodeLabel(btn, node.label);
-      }
-      updateStateClasses();
-    });
-  });
-
-  // Toggle expansion on orb click
-  orb.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (!isExpanded) {
-      expand();
-    } else {
-      collapse();
-    }
-  });
-
-  function getScaleFactor() {
-    const w = window.innerWidth;
-    if (w <= 480) return 0.42;
-    if (w <= 768) return 0.58;
-    if (w <= 1024) return 0.78;
-    return 1.0;
-  }
-
-  function expand() {
-    isExpanded = true;
-    activeNodeId = null;
-    orb.style.transform = 'translate(-50%, -50%) scale(1.15)';
-    nodeState.forEach(node => {
-      node.targetScale = 1;
-      node.targetOpacity = 0.7;
-    });
-    updateStateClasses();
-    if (!animationFrameId) {
-      animationFrameId = requestAnimationFrame(tick);
-    }
-  }
-
-  function collapse() {
-    isExpanded = false;
-    activeNodeId = null;
-    orb.style.transform = 'translate(-50%, -50%) scale(1)';
-    nodeState.forEach(node => {
-      node.targetScale = 0;
-      node.targetOpacity = 0;
-    });
-    updateStateClasses();
-  }
-
-  function updateStateClasses() {
-    nodeState.forEach(node => {
-      const btn = document.getElementById(`node-${node.id}`);
-      if (!btn) return;
-
-      if (!isExpanded) {
-        btn.classList.remove('visible', 'active-focus', 'dimmed');
-      } else {
-        btn.classList.add('visible');
-        if (activeNodeId) {
-          if (activeNodeId === node.id) {
-            btn.classList.add('active-focus');
-            btn.classList.remove('dimmed');
-          } else {
-            btn.classList.add('dimmed');
-            btn.classList.remove('active-focus');
-          }
-        } else {
-          btn.classList.remove('active-focus', 'dimmed');
-        }
-      }
-    });
-  }
-
-  function scrambleNodeLabel(btn, labelText) {
-    const labelSpan = btn.querySelector('.node-label');
-    if (!labelSpan) return;
-    const glyphs = "01XY$&#%*?[]^-_+={}/\\";
-    let iterations = 0;
-    const interval = setInterval(() => {
-      labelSpan.textContent = labelText
-        .split("")
-        .map((char, index) => {
-          if (index < iterations) return labelText[index];
-          return glyphs[Math.floor(Math.random() * glyphs.length)];
-        })
-        .join("");
-      
-      if (iterations >= labelText.length) {
-        clearInterval(interval);
-      }
-      iterations += 1;
-    }, 25);
-  }
-
-  function tick(timestamp) {
-    const scaleFactor = getScaleFactor();
-    const cx = container.offsetWidth / 2;
-    const cy = container.offsetHeight / 2;
-
-    let hasActiveAnimations = false;
-
-    nodeState.forEach((node, i) => {
-      const btn = document.getElementById(`node-${node.id}`);
-      const line = lines[i];
-      const dot = dots[i];
-      if (!btn || !line || !dot) return;
-
-      // Interpolation for smooth scaling/opacity transitions
-      node.currentScale += (node.targetScale - node.currentScale) * 0.12;
-      node.currentOpacity += (node.targetOpacity - node.currentOpacity) * 0.12;
-
-      if (Math.abs(node.targetScale - node.currentScale) > 0.005 || node.currentScale > 0.01) {
-        hasActiveAnimations = true;
-      }
-
-      // Ambient float swaying calculation (sinusoidal offset)
-      const swayX = Math.sin(timestamp * 0.0018 + node.phase) * 12 * scaleFactor;
-      const swayY = Math.cos(timestamp * 0.0014 + node.phase) * 12 * scaleFactor;
-
-      // Node coordinate position on container
-      node.x = cx + node.dx * scaleFactor + swayX;
-      node.y = cy + node.dy * scaleFactor + swayY;
-
-      // Update button style
-      btn.style.left = '0px';
-      btn.style.top = '0px';
-      btn.style.transform = `translate3d(${node.x}px, ${node.y}px, 0) scale(${node.currentScale})`;
-      btn.style.opacity = node.currentOpacity;
-
-      // Dynamically display relative coordinates based on position
-      const coordsSpan = btn.querySelector('.node-coords');
-      if (coordsSpan) {
-        const relativeX = (node.x - cx) / scaleFactor;
-        const relativeY = (node.y - cy) / scaleFactor;
-        coordsSpan.textContent = `[x:${relativeX.toFixed(1)}, y:${relativeY.toFixed(1)}]`;
-      }
-
-      // Update lines/particles in canvas
-      if (node.currentScale > 0.05) {
-        let x1, y1, x2, y2;
-        let isFocusedLine = false;
-
-        if (activeNodeId) {
-          const activeNode = nodeState.find(n => n.id === activeNodeId);
-          if (activeNode) {
-            if (node.id === activeNodeId) {
-              x1 = cx;
-              y1 = cy;
-              x2 = activeNode.x;
-              y2 = activeNode.y;
-              isFocusedLine = true;
-            } else {
-              // Lines bend to point from all other nodes to the clicked node
-              x1 = node.x;
-              y1 = node.y;
-              x2 = activeNode.x;
-              y2 = activeNode.y;
-            }
-          }
-        } else {
-          // Default: all lines radiate from center orb
-          x1 = cx;
-          y1 = cy;
-          x2 = node.x;
-          y2 = node.y;
-        }
-
-        line.setAttribute('x1', x1);
-        line.setAttribute('y1', y1);
-        line.setAttribute('x2', x2);
-        line.setAttribute('y2', y2);
-        line.style.opacity = node.currentOpacity;
-        
-        if (isFocusedLine || activeNodeId) {
-          line.classList.add('active-path');
-        } else {
-          line.classList.remove('active-path');
-        }
-
-        // Animate pulse particle along vector paths
-        node.pulseProgress += node.pulseSpeed;
-        if (node.pulseProgress > 1.0) {
-          node.pulseProgress = 0;
-        }
-
-        const px = x1 + (x2 - x1) * node.pulseProgress;
-        const py = y1 + (y2 - y1) * node.pulseProgress;
-
-        dot.setAttribute('cx', px);
-        dot.setAttribute('cy', py);
-        dot.setAttribute('class', 'pulse-dot active-pulse');
-        dot.style.opacity = node.currentOpacity;
-      } else {
-        // Retracted/Collapsed state
-        line.setAttribute('x1', 0);
-        line.setAttribute('y1', 0);
-        line.setAttribute('x2', 0);
-        line.setAttribute('y2', 0);
-        dot.setAttribute('class', 'pulse-dot');
-      }
-    });
-
-    if (isExpanded || hasActiveAnimations) {
-      animationFrameId = requestAnimationFrame(tick);
-    } else {
-      animationFrameId = null;
-    }
-  }
-}
