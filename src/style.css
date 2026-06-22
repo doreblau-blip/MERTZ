@@ -597,6 +597,13 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
   display: none;
 }
 
+.hover-preview-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 /* Link Hover (With sliding arrow on the left, customized to be EXACTLY the bold arrow upload) */
 .link-hover {
   position: relative;
@@ -807,12 +814,24 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
   width: 100%;
 }
 
+.col-span-3 {
+  grid-column: span 3;
+}
+
 .col-span-4 {
   grid-column: span 4;
 }
 
 .col-span-6 {
   grid-column: span 6;
+}
+
+.col-span-8-center {
+  grid-column: 3 / span 8;
+}
+
+.col-span-6-center {
+  grid-column: 4 / span 6;
 }
 
 .col-span-12 {

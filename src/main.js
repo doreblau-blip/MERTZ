@@ -233,28 +233,29 @@ function initWorksPreview() {
   const listItems = document.querySelectorAll('.clients-list li');
   if (listItems.length === 0) return;
 
-
-
   // Create preview container element dynamically
   const previewContainer = document.createElement('div');
   previewContainer.className = 'hover-preview-container';
   
-  const previewImg = document.createElement('img');
-  previewImg.id = 'hover-preview-image';
-  previewContainer.appendChild(previewImg);
+  const previewVideo = document.createElement('video');
+  previewVideo.id = 'hover-preview-video';
+  previewVideo.muted = true;
+  previewVideo.loop = true;
+  previewVideo.playsInline = true;
+  previewVideo.autoplay = true;
+  previewContainer.appendChild(previewVideo);
   document.body.appendChild(previewContainer);
 
-  // Map of client name to image source
-  const imageMap = {
-    'AWGE': '/previews/art_dreams_one_1782079468655.png',
-    'AMIRI': '/previews/art_dreams_two_1782079493531.png',
-    'CLOONE': '/previews/art_dreams_three_1782079516938.png',
-    'LOWLIGHTS STUDIOS': '/previews/media__1782078835670.png',
-    'DOWNLOADS': '/previews/art_dreams_two_1782079493531.png',
-    'LATTO': '/previews/art_dreams_one_1782079468655.png',
-    'CULT GAIA': '/previews/media__1782078796033.png',
-    'SNEAKS UP': '/previews/art_dreams_two_1782079493531.png',
-    'TFF': '/previews/art_dreams_three_1782079516938.png'
+  // Map of client name to video source
+  const videoMap = {
+    'AWGE': '/spider2.mp4',
+    'AMIRI': '/1_16.mp4',
+    'CLOONE': '/DMB3.mp4',
+    'LOWLIGHTS STUDIOS': '/nisas.mp4',
+    'LATTO': '/cheeta5.mp4',
+    'CULT GAIA': '/stormy_horse.mp4',
+    'SNEAKS UP': '/5052.mp4',
+    'TFF': '/umapaa.mp4'
   };
 
   let targetX = 0;
@@ -301,11 +302,12 @@ function initWorksPreview() {
 
   listItems.forEach(item => {
     const text = item.getAttribute('data-work') || item.textContent.trim();
-    const imgSrc = imageMap[text];
+    const videoSrc = videoMap[text];
     
-    if (imgSrc) {
+    if (videoSrc) {
       item.addEventListener('mouseenter', () => {
-        previewImg.src = imgSrc;
+        previewVideo.src = videoSrc;
+        previewVideo.play().catch(err => console.log(err));
         previewContainer.classList.add('active');
         isHovered = true;
         // Snap start coordinates to avoid large jumping sweeps
@@ -317,6 +319,9 @@ function initWorksPreview() {
       item.addEventListener('mouseleave', () => {
         previewContainer.classList.remove('active');
         isHovered = false;
+        previewVideo.pause();
+        previewVideo.removeAttribute('src');
+        previewVideo.load();
         document.body.classList.remove('hovering-link');
       });
     }
