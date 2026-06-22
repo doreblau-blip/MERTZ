@@ -1,0 +1,163 @@
+/* Bitcount Custom Font Family */
+@font-face {
+  font-family: "BitcountPropDouble-Black";
+  src: url("./assets/fonts/static/BitcountPropDouble-Black.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble-Bold";
+  src: url("./assets/fonts/static/BitcountPropDouble-Bold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble-ExtraBold";
+  src: url("./assets/fonts/static/BitcountPropDouble-ExtraBold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble-ExtraLight";
+  src: url("./assets/fonts/static/BitcountPropDouble-ExtraLight.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble-Light";
+  src: url("./assets/fonts/static/BitcountPropDouble-Light.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble-Medium";
+  src: url("./assets/fonts/static/BitcountPropDouble-Medium.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble-Regular";
+  src: url("./assets/fonts/static/BitcountPropDouble-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble-SemiBold";
+  src: url("./assets/fonts/static/BitcountPropDouble-SemiBold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble-Thin";
+  src: url("./assets/fonts/static/BitcountPropDouble-Thin.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Cursive-Black";
+  src: url("./assets/fonts/static/BitcountPropDouble_Cursive-Black.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Cursive-Bold";
+  src: url("./assets/fonts/static/BitcountPropDouble_Cursive-Bold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Cursive-ExtraBold";
+  src: url("./assets/fonts/static/BitcountPropDouble_Cursive-ExtraBold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Cursive-ExtraLight";
+  src: url("./assets/fonts/static/BitcountPropDouble_Cursive-ExtraLight.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Cursive-Light";
+  src: url("./assets/fonts/static/BitcountPropDouble_Cursive-Light.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Cursive-Medium";
+  src: url("./assets/fonts/static/BitcountPropDouble_Cursive-Medium.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Cursive-Regular";
+  src: url("./assets/fonts/static/BitcountPropDouble_Cursive-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Cursive-SemiBold";
+  src: url("./assets/fonts/static/BitcountPropDouble_Cursive-SemiBold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Cursive-Thin";
+  src: url("./assets/fonts/static/BitcountPropDouble_Cursive-Thin.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Roman-Black";
+  src: url("./assets/fonts/static/BitcountPropDouble_Roman-Black.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Roman-Bold";
+  src: url("./assets/fonts/static/BitcountPropDouble_Roman-Bold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Roman-ExtraBold";
+  src: url("./assets/fonts/static/BitcountPropDouble_Roman-ExtraBold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Roman-ExtraLight";
+  src: url("./assets/fonts/static/BitcountPropDouble_Roman-ExtraLight.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Roman-Light";
+  src: url("./assets/fonts/static/BitcountPropDouble_Roman-Light.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Roman-Medium";
+  src: url("./assets/fonts/static/BitcountPropDouble_Roman-Medium.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Roman-Regular";
+  src: url("./assets/fonts/static/BitcountPropDouble_Roman-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Roman-SemiBold";
+  src: url("./assets/fonts/static/BitcountPropDouble_Roman-SemiBold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BitcountPropDouble_Roman-Thin";
+  src: url("./assets/fonts/static/BitcountPropDouble_Roman-Thin.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
