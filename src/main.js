@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollResponsiveMarquee();
   initNavbarHUD();
   scrambleLogo();
-  initInfiniteReel();
+  initHeroFrameCounter();
 });
 
 /* -------------------------------------------------------------
@@ -538,131 +538,18 @@ function scrambleLogo() {
 }
 
 /* -------------------------------------------------------------
- * 11. Infinite Reel — Physics-Based Cinematic Drag Strip
+ * 11. Hero Video Frame Counter (FRM: 00024)
  * ------------------------------------------------------------- */
-function initInfiniteReel() {
-  const track = document.getElementById('reel-track');
-  const wrapper = track ? track.parentElement : null;
-  const frameVal = document.getElementById('reel-frame-val');
-  const velVal = document.getElementById('reel-vel-val');
-  if (!track || !wrapper) return;
+function initHeroFrameCounter() {
+  const video = document.querySelector('.hero-bg-video');
+  const frameVal = document.getElementById('hero-frame-val');
+  if (!video || !frameVal) return;
 
-  let offset = 0;
-  let velocity = 0;
-  let isDragging = false;
-  let startX = 0;
-  let startOffset = 0;
-  let lastPointerX = 0;
-  let lastTime = 0;
-  const friction = 0.94; // momentum decay
-  const autoSpeed = -0.4; // slow auto-scroll to the left
+  const fps = 24; // assume 24fps cinematic
 
-  // Calculate max offset (track width minus viewport)
-  function getMaxOffset() {
-    return Math.max(0, track.scrollWidth - wrapper.offsetWidth);
-  }
-
-  // Pointer down
-  function onPointerDown(e) {
-    isDragging = true;
-    velocity = 0;
-    startX = e.clientX || e.touches[0].clientX;
-    startOffset = offset;
-    lastPointerX = startX;
-    lastTime = performance.now();
-    track.classList.add('dragging');
-    e.preventDefault();
-  }
-
-  // Pointer move
-  function onPointerMove(e) {
-    if (!isDragging) return;
-    const x = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-    const now = performance.now();
-    const dt = now - lastTime;
-
-    if (dt > 0) {
-      velocity = (lastPointerX - x) / dt * 16; // normalize to ~60fps
-    }
-
-    lastPointerX = x;
-    lastTime = now;
-
-    const delta = startX - x;
-    offset = startOffset + delta;
-
-    // Clamp with rubber-band resistance at edges
-    const max = getMaxOffset();
-    if (offset < 0) offset = offset * 0.3;
-    if (offset > max) offset = max + (offset - max) * 0.3;
-  }
-
-  // Pointer up
-  function onPointerUp() {
-    if (!isDragging) return;
-    isDragging = false;
-    track.classList.remove('dragging');
-  }
-
-  // Mouse events
-  wrapper.addEventListener('mousedown', onPointerDown);
-  window.addEventListener('mousemove', onPointerMove);
-  window.addEventListener('mouseup', onPointerUp);
-
-  // Touch events
-  wrapper.addEventListener('touchstart', (e) => onPointerDown(e.touches ? e : e), { passive: false });
-  window.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-    onPointerMove(e);
-  }, { passive: false });
-  window.addEventListener('touchend', onPointerUp);
-
-  // Physics animation loop
   function tick() {
-    const max = getMaxOffset();
-
-    if (!isDragging) {
-      // Apply momentum + friction
-      if (Math.abs(velocity) > 0.1) {
-        offset += velocity;
-        velocity *= friction;
-      } else {
-        // Auto-scroll when idle
-        velocity = 0;
-        offset += autoSpeed;
-      }
-
-      // Bounce back from edges
-      if (offset < 0) {
-        offset += (0 - offset) * 0.12;
-        velocity *= 0.5;
-      }
-      if (offset > max) {
-        offset += (max - offset) * 0.12;
-        velocity *= 0.5;
-      }
-    }
-
-    // Apply transform
-    track.style.transform = `translate3d(${-offset}px, 0, 0)`;
-
-    // Motion blur based on velocity
-    const absVel = Math.abs(velocity);
-    const blur = Math.min(absVel * 0.15, 6);
-    track.style.filter = blur > 0.3 ? `blur(${blur}px)` : 'none';
-
-    // Update frame counter
-    if (frameVal) {
-      const frameWidth = 330; // frame width + gap
-      const currentFrame = Math.max(1, Math.floor(offset / frameWidth) + 1);
-      frameVal.textContent = String(currentFrame).padStart(5, '0');
-    }
-
-    // Update velocity readout
-    if (velVal) {
-      velVal.textContent = absVel.toFixed(2);
-    }
-
+    const currentFrame = Math.floor(video.currentTime * fps) + 1;
+    frameVal.textContent = String(currentFrame).padStart(5, '0');
     requestAnimationFrame(tick);
   }
 
