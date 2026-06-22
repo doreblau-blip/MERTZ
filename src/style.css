@@ -251,8 +251,7 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
   min-height: 2.8rem;
   overflow: hidden;
   flex-shrink: 0;
-  mix-blend-mode: normal; /* Normal mode on load */
-  transition: mix-blend-mode 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #ffffff;
 }
 
 /* Endless Scrolling Marquee Track styles */
@@ -289,19 +288,19 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
 }
 
 .ticker-mertz {
-  color: var(--text-color-primary); /* Dark gray close to black on load */
+  color: #ffffff;
   font-weight: 600;
   transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ticker-star {
-  color: var(--text-color-muted); /* Muted gray on load */
+  color: #888888;
   margin: 0 10px;
   transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ticker-studios {
-  color: var(--ticker-studios-color); /* Light gray close to white on load */
+  color: #bbbbbb;
   font-weight: 400;
   transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -350,6 +349,7 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
   flex-shrink: 0;
   display: flex;
   align-items: center;
+  mix-blend-mode: difference;
 }
 
 .brand-logo-link {
@@ -370,38 +370,11 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.5px;
-  color: #000000; /* Default/Normal state: pure black on white background */
+  color: #ffffff; /* Becomes white to enable difference blend calculation */
   user-select: none;
   display: inline-flex;
   align-items: center;
-  mix-blend-mode: normal; /* Normal mode on load */
   transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Scrolled State Styles (when moving over project sections) */
-.site-header-fixed.scrolled {
-  mix-blend-mode: difference;
-}
-
-.site-header-fixed.scrolled .brand-logo {
-  color: #ffffff; /* Becomes white to enable difference blend calculation */
-  mix-blend-mode: normal;
-}
-
-.site-header-fixed.scrolled .action-bar {
-  mix-blend-mode: normal;
-}
-
-.site-header-fixed.scrolled .ticker-mertz {
-  color: #ffffff;
-}
-
-.site-header-fixed.scrolled .ticker-star {
-  color: #888888;
-}
-
-.site-header-fixed.scrolled .ticker-studios {
-  color: #bbbbbb;
 }
 
 .reg-symbol {
@@ -732,11 +705,11 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1.1px solid var(--text-color-primary);
+  border: 1.1px solid currentColor;
   border-radius: 50%; /* Forms a perfect mathematical ellipse */
   width: 96px;
   height: 48px;
-  background-color: var(--bg-color);
+  background-color: transparent;
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--text-color-primary);
@@ -762,14 +735,15 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
 /* Background video */
 .hero-bg-video {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  height: 100dvh;
   object-fit: cover;
-  z-index: 0;
+  z-index: 1; /* place behind content but above background */
   pointer-events: none;
+  filter: grayscale(100%) brightness(0.9) contrast(1.1); /* Black & white, high-contrast, premium */
 }
 
 /* Ensure contents display above the video */
