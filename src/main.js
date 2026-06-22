@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavbarHUD();
   scrambleLogo();
   initHeroFrameCounter();
+  initViewfinder();
 });
 
 /* -------------------------------------------------------------
@@ -550,6 +551,47 @@ function initHeroFrameCounter() {
   function tick() {
     const currentFrame = Math.floor(video.currentTime * fps) + 1;
     frameVal.textContent = String(currentFrame).padStart(5, '0');
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+}
+
+/* -------------------------------------------------------------
+ * 12. Cinematic Viewfinder — Parallax + Coordinate Tracking
+ * ------------------------------------------------------------- */
+function initViewfinder() {
+  const vf = document.getElementById('viewfinder');
+  const xVal = document.getElementById('vf-x');
+  const yVal = document.getElementById('vf-y');
+  if (!vf) return;
+
+  let targetX = 0;
+  let targetY = 0;
+  let currentX = 0;
+  let currentY = 0;
+  const parallaxStrength = 15; // max px offset
+  const smoothing = 0.06;
+
+  document.addEventListener('mousemove', (e) => {
+    // Normalize mouse position to -1...1
+    const normX = (e.clientX / window.innerWidth - 0.5) * 2;
+    const normY = (e.clientY / window.innerHeight - 0.5) * 2;
+
+    targetX = normX * parallaxStrength;
+    targetY = normY * parallaxStrength;
+
+    // Update coordinate readout
+    if (xVal) xVal.textContent = ((e.clientX / window.innerWidth)).toFixed(2);
+    if (yVal) yVal.textContent = ((e.clientY / window.innerHeight)).toFixed(2);
+  });
+
+  function tick() {
+    currentX += (targetX - currentX) * smoothing;
+    currentY += (targetY - currentY) * smoothing;
+
+    vf.style.transform = `translate(calc(-50% + ${currentX}px), calc(-50% + ${currentY}px))`;
+
     requestAnimationFrame(tick);
   }
 
