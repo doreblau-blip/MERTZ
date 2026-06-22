@@ -755,7 +755,144 @@ body.hovering-giant .cursor-trailing-eye .eye-pupil {
   height: calc(100dvh - 2 * var(--container-padding-top) - 2.8rem - 20px);
   width: 100%;
   position: relative;
+  overflow: hidden;
   flex-shrink: 0;
+}
+
+/* Background video */
+.hero-bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Ensure contents display above the video */
+.hero-fold .split-header,
+.hero-fold .site-footer {
+  position: relative;
+  z-index: 2;
+}
+
+/* Difference blend styles for hero-fold text and elements */
+.hero-fold .profile-title,
+.hero-fold .profile-bio,
+.hero-fold .selected-clients-box,
+.hero-fold .giant-number,
+.hero-fold .site-footer {
+  color: #ffffff !important;
+  mix-blend-mode: difference;
+}
+
+.hero-fold .site-footer p,
+.hero-fold .site-footer a,
+.hero-fold .site-footer span,
+.hero-fold .site-footer .capsule-clock {
+  color: #ffffff !important;
+}
+
+.hero-fold .site-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hero-fold .clients-list li {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.hero-fold .clients-list li:hover {
+  color: #ffffff !important;
+}
+
+.hero-fold .client-num {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Play/Pause Button for background video */
+.hero-video-control {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 300;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px; /* Open state when video is playing */
+  padding: 0 5px;
+  height: 28px;
+  transition: gap 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  mix-blend-mode: difference;
+}
+
+.hero-video-control:hover {
+  opacity: 0.8;
+}
+
+.bracket-left, .bracket-right {
+  font-family: inherit;
+  font-size: 1.1rem;
+  user-select: none;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.control-icon-wrapper {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-pause-bars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1;
+  transform: scale(1);
+}
+
+.pause-bar {
+  width: 3px;
+  height: 100%;
+  background-color: currentColor;
+}
+
+.icon-play-triangle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+  opacity: 0;
+  transform: scale(0.5) rotate(-45deg);
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+/* Paused State */
+.hero-video-control.paused {
+  gap: 4px; /* Brackets close together */
+}
+
+.hero-video-control.paused .icon-pause-bars {
+  opacity: 0;
+  transform: scale(0.5) rotate(45deg);
+}
+
+.hero-video-control.paused .icon-play-triangle {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
 }
 
 /* Year Section */

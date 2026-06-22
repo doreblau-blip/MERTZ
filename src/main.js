@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initWorksPreview();
   initStickyHeader();
   initVideoAudio();
+  initHeroVideoControl();
 });
 
 /* -------------------------------------------------------------
@@ -378,5 +379,24 @@ function initVideoAudio() {
       video.muted = true;
       soundBtn.classList.remove('unmuted');
     });
+  });
+}
+
+/* -------------------------------------------------------------
+ * 7. Background video controller (Play/Pause with animated brackets)
+ * ------------------------------------------------------------- */
+function initHeroVideoControl() {
+  const video = document.querySelector('.hero-bg-video');
+  const controlBtn = document.getElementById('hero-video-control');
+  if (!video || !controlBtn) return;
+
+  controlBtn.addEventListener('click', () => {
+    if (video.paused) {
+      video.play().catch(err => console.log(err));
+      controlBtn.classList.remove('paused');
+    } else {
+      video.pause();
+      controlBtn.classList.add('paused');
+    }
   });
 }

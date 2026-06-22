@@ -87,6 +87,10 @@
 
       <!-- First Screen Fold -->
       <div class="hero-fold">
+        <!-- Hero Background Video -->
+        <video class="hero-bg-video" autoplay loop muted playsinline>
+          <source src="/cheeta5.mp4" type="video/mp4" />
+        </video>
 
         <!-- Split Header (Landing Page) -->
         <section class="split-header" id="hero-section">
@@ -141,6 +145,22 @@
               <a href="https://instagram.com/mertz" target="_blank" rel="noopener" class="link-hover">IG</a>
               <a href="https://behance.net/mertz" target="_blank" rel="noopener" class="link-hover">BE</a>
             </div>
+            
+            <!-- Play/Pause Control Button for Background Video -->
+            <button class="hero-video-control" id="hero-video-control" aria-label="Toggle Background Video">
+              <span class="bracket-left">[</span>
+              <span class="control-icon-wrapper">
+                <span class="icon-pause-bars">
+                  <span class="pause-bar"></span>
+                  <span class="pause-bar"></span>
+                </span>
+                <svg class="icon-play-triangle" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" fill="currentColor"></path>
+                </svg>
+              </span>
+              <span class="bracket-right">]</span>
+            </button>
+
             <div class="capsule-clock">
               <span class="clock-time">00:00</span>
             </div>
